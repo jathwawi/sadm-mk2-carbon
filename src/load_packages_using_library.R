@@ -1,5 +1,6 @@
 # library necessary packages
 
+library(tidyverse)
 library(shiny)
 library(shinydashboard)
 library(shinythemes)
@@ -20,7 +21,7 @@ library(flexsurv)
 library(DT)
 library(knitr)
 library(kableExtra)
-library(darkpeak) # can be installed using devtools::install_github("robertASmith/darkpeak")
+#library(darkpeak) # can be installed using devtools::install_github("robertASmith/darkpeak")
 library(shinypop) # can be installed using devtools::install_github("dreamRs/shinypop")
 
 

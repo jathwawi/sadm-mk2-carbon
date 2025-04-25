@@ -2,20 +2,15 @@
 
 
 
-# # # load ONS SURVIVAL DATA -------
-loadONS = function(str = "data/df_ons.csv") {
-  surv_probs = read.csv(str)
-  surv_probs = surv_probs[surv_probs$age > 49, ]
-  surv_probs = surv_probs[, -1]
-  # add 91-100 age
-  df_temp = surv_probs[nrow(surv_probs):(nrow(surv_probs) - 1), ]
-  df_temp = df_temp[rep(1:2, each = 10), ]
-  df_temp$age = rep(91:100, 2)
-  surv_probs = rbind(surv_probs, df_temp)
-  surv_probs = surv_probs[order(surv_probs$age), ]
+# # # load Australian life table data -------
+loadONS <- function(str = "data/df_aus_life_tables.csv") {
+  surv_probs <- readr::read_csv(str) %>% 
+    dplyr::filter(age > 49,
+                  age < 101) %>% 
+    dplyr::select(!year) %>% 
+    dplyr::arrange(age)
   return(surv_probs)
 }
-
 
 
 # gen pop survival ui  -----
@@ -42,9 +37,11 @@ survival_ui <- function(title = "Base survival",tab_id = 1){
                 offset = 1, width = 8,
                 div(
                     style = "font-size:120%",
-                    p("We use mortality rates from the ONS to model age-dependent baseline mortality rates."),
+                    p("We use mortality rates from the Australian Government 
+                      Actuary's Life Tables 2020-22 to model age-dependent 
+                      baseline mortality rates."),
                     column(11,style="padding-left:0",
-                        p("In the base scenario, the cohort is 65% female, but you can change 
+                        p("In the base scenario, the cohort is 51% female, but you can change 
                         this using the slider on the right. Mortality rates are adjusted accordingly"),
                         p("You can also set the age at which the cohort
                     enters (currently 50), and at what age the model stops (currently 90), 
@@ -59,7 +56,7 @@ survival_ui <- function(title = "Base survival",tab_id = 1){
                     inputId = "prop_female",
                     label = "% Female",
                     orientation = "vertical",direction = "rtl",
-                    min = 0, max = 100, value = 64,step = 1,
+                    min = 0, max = 100, value = 51,step = 1,
                     height = "120px", width = "50%",
                     color = "#70A338",
                     pips = list(
